@@ -17,10 +17,19 @@ const Navbar = () => {
             return false;
         }
     });
+    
     const location = useLocation();
     const navRef = useRef(null);
     const clerk = useClerk();
     const navigate = useNavigate();
+
+    const navItems = [
+        { label: "Home", href: "/" },
+        { label: "Doctors", href: "/doctors" },
+        { label: "Services", href: "/services" },
+        { label: "Appointments", href: "/appointments" },
+        { label: "Contact", href: "/contact" },
+    ];
 
     return (
         <>
@@ -39,8 +48,33 @@ const Navbar = () => {
                                     alt="AyuCare Logo" 
                                     className="h-10 w-auto object-contain block" 
                                 />
+                            </div>
+                            <div className={navbarStyles.logoTextContainer}>
+                                <h1 className={navbarStyles.logoTitle}>
+                                    AyuCare
+                                </h1>
+                                <p className={navbarStyles.logoSubtitle}>
+                                    HealthCare Solutions
+                                </p>
                             </div> 
                         </Link>
+                        
+                        <div className={navbarStyles.desktopNav}>
+                            <div className={navbarStyles.navItemsContainer}>
+                                {navItems.map((item) => {
+                                    const isActive = location.pathname === item.href;
+                                    return (
+                                        <Link key={item.label} to={item.href}
+                                            className={`${navbarStyles.navItem} ${
+                                                isActive ? navbarStyles.navItemActive : ""
+                                            }`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    );
+                                })} {/* <-- Fixed: Added closing parenthesis here */}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>
