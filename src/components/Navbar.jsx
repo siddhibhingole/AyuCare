@@ -57,10 +57,12 @@ const Navbar = () => {
                     showNavbar ? navbarStyles.navbarVisible : navbarStyles.navbarHidden
                 }`}
             >
-                <div className={navbarStyles.contentWrapper}>
-                    <div className={navbarStyles.flexContainer}>
-                        {/* Logo */}
-                        <Link to="/" className="flex items-center gap-2">
+                <div className={`${navbarStyles.contentWrapper} w-full px-4 sm:px-6 lg:px-8`}>
+                    {/* Forced horizontal flex container bridging everything side-by-side */}
+                    <div className={`${navbarStyles.flexContainer} flex flex-row items-center justify-between w-full`}>
+                        
+                        {/* Logo & Title */}
+                        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
                             <div className="flex items-center justify-center">
                                 <img 
                                     src={logo} 
@@ -74,15 +76,15 @@ const Navbar = () => {
                             </div> 
                         </Link>
                         
-                        {/* Desktop Navigation Links */}
-                        <div className={navbarStyles.desktopNav}>
-                            <div className={navbarStyles.navItemsContainer}>
+                        {/* Desktop Navigation Links - Hidden on mobile, forced horizontal row on desktop */}
+                        <div className={`hidden md:flex flex-row items-center gap-6 ${navbarStyles.desktopNav}`}>
+                            <div className={`${navbarStyles.navItemsContainer} flex flex-row items-center gap-6`}>
                                 {navItems.map((item) => {
                                     const isActive = location.pathname === item.href;
                                     return (
                                         <Link key={item.label} to={item.href}
-                                            className={`${navbarStyles.navItem} ${
-                                                isActive ? navbarStyles.navItemActive : ""
+                                            className={`${navbarStyles.navItem} text-sm font-medium transition-colors ${
+                                                isActive ? `${navbarStyles.navItemActive} text-green-600 font-semibold` : "text-gray-700 hover:text-green-600"
                                             }`}
                                         >
                                             {item.label}
@@ -93,15 +95,15 @@ const Navbar = () => {
                         </div>
 
                         {/* Right Side Actions - Forced Horizontal Row */}
-                        <div className={`${navbarStyles.rightSideContainer} flex items-center flex-row gap-3`}>
+                        <div className={`${navbarStyles.rightSideContainer} flex items-center flex-row gap-3 flex-shrink-0`}>
                             {isDoctorLoggedIn ? (
-                                <Link to='/doctor-admin/dashboard' className={navbarStyles.doctorAdminButton}>
+                                <Link to='/doctor-admin/dashboard' className={`${navbarStyles.doctorAdminButton} flex items-center gap-2`}>
                                     <LayoutDashboard className={navbarStyles.doctorAdminIcon} />
                                     <span className={navbarStyles.doctorAdminText}>Dashboard</span>
                                 </Link>
                             ) : (
                                 <SignedOut>
-                                    <Link to='/doctor-admin/login' className={navbarStyles.doctorAdminButton}>
+                                    <Link to='/doctor-admin/login' className={`${navbarStyles.doctorAdminButton} flex items-center gap-2`}>
                                         <User className={navbarStyles.doctorAdminIcon} />
                                         <span className={navbarStyles.doctorAdminText}>
                                             Doctor Admin
@@ -113,7 +115,7 @@ const Navbar = () => {
                             <SignedOut>
                                 <button 
                                     onClick={() => clerk.openSignIn()}
-                                    className={navbarStyles.loginButton}
+                                    className={`${navbarStyles.loginButton} flex items-center gap-2`}
                                 >
                                     <Key className={navbarStyles.loginIcon} />
                                     Login
@@ -124,7 +126,7 @@ const Navbar = () => {
                                 <UserButton afterSignOutUrl="/" />
                             </SignedIn>
 
-                            {/* Mobile Menu Toggle */}
+                            {/* Mobile Menu Toggle Button */}
                             <button 
                                 onClick={() => setIsOpen(!isOpen)}
                                 className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 focus:outline-none"
@@ -138,16 +140,16 @@ const Navbar = () => {
 
                 {/* Mobile Navigation Drawer */}
                 {isOpen && (
-                    <div className="md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2 shadow-lg">
-                        {navItems.map((item) => {
+                    <div className="md:hidden bg-white border-t border-gray-100 px-4 pt-3 pb-4 space-y-2 shadow-lg">
+                        {navItems.map((item, idx) => {
                             const isActive = location.pathname === item.href;
                             return (
                                 <Link 
-                                    key={item.label} 
+                                    key={idx} 
                                     to={item.href}
                                     onClick={() => setIsOpen(false)}
                                     className={`block px-3 py-2 rounded-md text-base font-medium ${
-                                        isActive ? 'text-primary bg-gray-50' : 'text-gray-700 hover:bg-gray-50'
+                                        isActive ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:bg-gray-50'
                                     }`}
                                 >
                                     {item.label}
